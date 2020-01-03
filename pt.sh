@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH -J puheentunnistusHerkko
-#SBATCH -o /wrk/salone35/logs/output_%j.txt
-#SBATCH -e /wrk/salone35/logs/errors_%j.txt
+#SBATCH -J puheentunnistus
+#SBATCH -o /wrk/*USER*/logs/output_%j.txt
+#SBATCH -e /wrk/*USER*/logs/errors_%j.txt
 #SBATCH -t 03:00:00
 #SBATCH -n 1
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=16
 #SBATCH -p serial
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=herkko.salonen@tuni.fi
+#SBATCH --mail-user=*EMAIL*
 #SBATCH --mem-per-cpu=2000
 
-WEV=/wrk/salone35/wev-$SLURM_JOB_ID
+WEV=/wrk/*USER*/wev-$SLURM_JOB_ID
 mkdir $WEV ; cd $WEV
 
 module load aaltoasr
 echo "Puheentunnistus"
 
-for file in /wrk/salone35/denoised/*
+for file in /wrk/*USER*/denoised/*
 do
         identifier=${file:29:4}
 
@@ -25,13 +25,13 @@ do
 
         if [ $identifier == "bike" ]
         then
-                aaltoasr-align -n1 -o "${file:23:5}output.txt" -t /wrk/salone35/bike.txt -T "${file:23:5}output.TextGrid" $file
+                aaltoasr-align -n1 -o "${file:23:5}output.txt" -t /wrk/*USER*/bike.txt -T "${file:23:5}output.TextGrid" $file
         elif [ $identifier == "carr" ]
         then
-                aaltoasr-align -n1 -o "${file:23:5}output.txt" -t /wrk/salone35/carrot.txt -T "${file:23:5}output.TextGrid" $file
+                aaltoasr-align -n1 -o "${file:23:5}output.txt" -t /wrk/*USER*/carrot.txt -T "${file:23:5}output.TextGrid" $file
         elif [ $identifier == "pake" ]
         then
-                aaltoasr-align -n1 -o "${file:23:5}output.txt" -t /wrk/salone35/paketti.txt -T "${file:23:5}output.TextGrid" $file
+                aaltoasr-align -n1 -o "${file:23:5}output.txt" -t /wrk/*USER*/paketti.txt -T "${file:23:5}output.TextGrid" $file
         else
        		echo "fail"
         fi
